@@ -44,7 +44,7 @@ class FormMapper
      * @param $form
      * @return
      */
-    public function createFormBuilder($data = null, $name = 'form', array $options = array())
+    public function createFormBuilder($data = null, $name = '', array $options = array())
     {
         // Build the $form
         $formBuilder = $this->factory->createNamedBuilder($name, 'form', $data, $options);
