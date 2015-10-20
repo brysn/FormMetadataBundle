@@ -1,0 +1,26 @@
+{
+  "name": "flintlabs/formmetadatabundle",
+  "type": "library",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://bitbucket.org/bpolaszek/formmetadatabundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Beno!t POLASZEK",
+      "role": "Developer"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://bitbucket.org/bpolaszek/formmetadatabundle"
+    }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "autoload": {
+    "psr-4": {"FlintLabs\\Bundle\\FormMetadataBundle\\": ""}
+  }
+}
