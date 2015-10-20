@@ -44,10 +44,10 @@ class FormMapper
      * @param $form
      * @return
      */
-    public function createFormBuilder($entity, $data = null, array $options = array())
+    public function createFormBuilder($entity, $data = null, $name = '', array $options = array())
     {
         // Build the $form
-        $formBuilder = $this->factory->createBuilder('form', $data, $options);
+        $formBuilder = $this->factory->createNamedBuilder($name, 'form', $data, $options);
         
         // Read the entity meta data and add to the form
         if(empty($this->drivers)) return $formBuilder;
