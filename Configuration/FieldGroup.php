@@ -7,6 +7,7 @@
 /**
  * e.g. @Form\FieldGroup('example')
  * @author camm (camm@flintinteractive.com.au)
+ * @Annotation
  */
 class FieldGroup 
 {
