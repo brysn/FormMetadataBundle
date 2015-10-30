@@ -10,7 +10,7 @@
 namespace FlintLabs\Bundle\FormMetadataBundle;
 
 use Symfony\Component\Form\FormFactory,
-FlintLabs\Bundle\FormMetadataBundle\Driver\MetadataDriverInterface;
+    FlintLabs\Bundle\FormMetadataBundle\Driver\MetadataDriverInterface;
 /**
  * Obtains any metadata from the entity and adds it's configuration
  * to the form
@@ -40,15 +40,25 @@ class FormMapper
 
     /**
      * Obtains any form metadata from the entity and adds itself to the form
-     * @param $entity
-     * @param $form
-     * @return
+     * @param null $data
+     * @param string $name
+     * @param array $options
+     * @return \Symfony\Component\Form\FormBuilderInterface
      */
     public function createFormBuilder($data = null, $name = '', array $options = array())
     {
+        if (array_key_exists('method', $options)) {
+            $method = $options['method'];
+            unset($options['method']);
+        }
+
         // Build the $form
         $formBuilder = $this->factory->createNamedBuilder($name, 'form', $data, $options);
-        
+
+        if (isset($method)) {
+            $formBuilder->setMethod($method);
+        }
+
         // Read the entity meta data and add to the form
         if(empty($this->drivers)) return $formBuilder;
 
@@ -65,8 +75,33 @@ class FormMapper
         foreach($fields as $field) {
             // TODO: Detect "new x()" in field value or type option for AbstractType creation
             // TODO: Detect references to "%service.id%" for service constructor dependency
-            $formBuilder->add($field->name, $field->value, $field->options);
+            $fieldOptions = $field->options;
+
+            if (in_array($formBuilder->getMethod(), ['POST']) && array_key_exists('onCreate', $fieldOptions)) {
+                if ($fieldOptions['onCreate']) {
+                    $fieldOptions = array_replace($fieldOptions, $fieldOptions['onCreate']);
+                }
+                else {
+                    continue;
+                }
+            }
+
+            elseif (in_array($formBuilder->getMethod(), ['PUT', 'PATCH']) && array_key_exists('onEdit', $fieldOptions)) {
+                if ($fieldOptions['onEdit']) {
+                    $fieldOptions = array_replace($fieldOptions, $fieldOptions['onEdit']);
+                }
+                else {
+                    continue;
+                }
+            }
+
+
+            unset($fieldOptions['onCreate']);
+            unset($fieldOptions['onEdit']);
+
+            $formBuilder->add($field->name, $field->value, $fieldOptions);
         }
+
 
         return $formBuilder;
     }
