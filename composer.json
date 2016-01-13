@@ -3,8 +3,8 @@
   "type": "library",
   "description": "",
   "keywords": [],
-  "homepage": "https://bitbucket.org/bpolaszek/formmetadatabundle",
-  "license": "MIT",
+  "homepage": "https://github.com/bpolaszek/formmetadatabundle",
+  "license": "",
   "authors": [
     {
       "name": "Beno!t POLASZEK",
@@ -14,7 +14,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@bitbucket.org:bpolaszek/formmetadatabundle.git"
+      "url": "git@github.com:bpolaszek/FormMetadataBundle.git"
     }
   ],
   "require": {
