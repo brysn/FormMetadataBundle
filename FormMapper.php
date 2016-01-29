@@ -9,8 +9,9 @@
  */
 namespace FlintLabs\Bundle\FormMetadataBundle;
 
-use Symfony\Component\Form\FormFactory,
-    FlintLabs\Bundle\FormMetadataBundle\Driver\MetadataDriverInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactory;
+use FlintLabs\Bundle\FormMetadataBundle\Driver\MetadataDriverInterface;
 /**
  * Obtains any metadata from the entity and adds it's configuration
  * to the form
@@ -53,7 +54,7 @@ class FormMapper
         }
 
         // Build the $form
-        $formBuilder = $this->factory->createNamedBuilder($name, 'form', $data, $options);
+        $formBuilder = $this->factory->createNamedBuilder($name, FormType::class, $data, $options);
 
         if (isset($method)) {
             $formBuilder->setMethod($method);

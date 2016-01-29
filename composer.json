@@ -1,11 +1,11 @@
 {
-  "name": "bpolaszek/formmetadatabundle",
-  "type": "library",
-  "description": "",
-  "keywords": [],
-  "homepage": "https://github.com/bpolaszek/formmetadatabundle",
-  "license": "",
-  "authors": [
+  "name"        : "bpolaszek/formmetadatabundle",
+  "type"        : "library",
+  "description" : "",
+  "keywords"    : [],
+  "homepage"    : "https://github.com/bpolaszek/formmetadatabundle",
+  "license"     : "",
+  "authors"     : [
     {
       "name": "Beno!t POLASZEK",
       "role": "Developer"
@@ -14,13 +14,15 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@github.com:bpolaszek/FormMetadataBundle.git"
+      "url" : "git@github.com:bpolaszek/FormMetadataBundle.git"
     }
   ],
-  "require": {
+  "require"     : {
     "php": ">=5.4"
   },
-  "autoload": {
-    "psr-4": {"FlintLabs\\Bundle\\FormMetadataBundle\\": ""}
+  "autoload"    : {
+    "psr-4": {
+      "FlintLabs\\Bundle\\FormMetadataBundle\\": ""
+    }
   }
 }
