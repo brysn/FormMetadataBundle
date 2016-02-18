@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace FlintLabs\Bundle\FormMetadataBundle;
 
 use Symfony\Component\Form\AbstractType;
@@ -17,11 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormType extends AbstractType
 {
+    private $class;
+
     /** @var FormMetadata */
     private $metadata;
 
-    public function __construct(FormMetadata $metadata)
+    public function __construct($class, FormMetadata $metadata)
     {
+        $this->class = $class;
         $this->metadata = $metadata;
     }
 
@@ -35,5 +29,8 @@ class FormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults(array(
+            'data_class' => $this->class,
+        ));
     }
 }

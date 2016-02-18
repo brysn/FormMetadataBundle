@@ -22,7 +22,7 @@ class FormExtension extends AbstractExtension
             throw new InvalidArgumentException(sprintf('The type "%s" can not be loaded by this extension', $name));
         }
 
-        return new FormType($metadata);
+        return new FormType($name, $metadata);
     }
 
     public function hasType($name)
