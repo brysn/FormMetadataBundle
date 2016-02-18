@@ -22,7 +22,7 @@ class FormMapper
 {
     /**
      * Drivers that will be used to obtaining metadata
-     * @var array
+     * @var MetadataDriverInterface[]
      */
     private $drivers = array();
 
@@ -61,19 +61,25 @@ class FormMapper
         }
 
         // Read the entity meta data and add to the form
-        if(empty($this->drivers)) return $formBuilder;
+        if (empty($this->drivers)) {
+            return $formBuilder;
+        }
 
         // Look to the readers to find metadata
         foreach ($this->drivers as $driver) {
             $metadata = $driver->getMetadata($data);
-            if(!empty($metadata)) break;
+            if (!empty($metadata)) {
+                break;
+            }
         }
 
-        if(empty($metadata)) return $formBuilder;
+        if (empty($metadata)) {
+            return $formBuilder;
+        }
 
         // Configure the form
         $fields = $metadata->getFields();
-        foreach($fields as $field) {
+        foreach ($fields as $field) {
             // TODO: Detect "new x()" in field value or type option for AbstractType creation
             // TODO: Detect references to "%service.id%" for service constructor dependency
             $fieldOptions = $field->options;
@@ -96,7 +102,6 @@ class FormMapper
                 }
             }
 
-
             unset($fieldOptions['onCreate']);
             unset($fieldOptions['onEdit']);
 
@@ -109,7 +114,7 @@ class FormMapper
 
     /**
      * Add an entity metadata reader to the readers
-     * @param EntityMetadataReaderInterface $reader
+     * @param MetadataDriverInterface $driver
      * @return void
      */
     public function addDriver(MetadataDriverInterface $driver)
