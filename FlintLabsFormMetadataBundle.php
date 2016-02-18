@@ -7,12 +7,23 @@
  * For full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace FlintLabs\Bundle\FormMetadataBundle;
+
+use FlintLabs\Bundle\FormMetadataBundle\DependencyInjection\Compiler\FormExtensionCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 /**
  *
  * @author camm (camm@flintinteractive.com.au)
  */
 class FlintLabsFormMetadataBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new FormExtensionCompilerPass());
+    }
 }

@@ -17,16 +17,16 @@ class AnnotationsDriver implements MetadataDriverInterface
 {
     /**
      * Read the entity and create an associated metadata
-     * @param $entity
+     * @param $type
      * @return null|FormMetadata
      */
-    public function getMetadata($entity)
+    public function getMetadata($type)
     {
         $metadata = new FormMetadata();
 
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
 
-        $reflectionClass = new \ReflectionClass(get_class($entity));
+        $reflectionClass = new \ReflectionClass($type);
 
         while (is_object($reflectionClass)) {
             $properties = $reflectionClass->getProperties();
