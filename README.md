@@ -12,6 +12,7 @@ as a best practice.
 ## Annotations Example
 
 **Standard form builder**
+
     use Symfony\Component\Form\Extension\Core\Type\DateType;
     // ...
 
