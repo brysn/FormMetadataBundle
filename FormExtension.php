@@ -47,11 +47,8 @@ class FormExtension extends AbstractExtension
         // Look to the readers to find metadata
         foreach ($this->drivers as $driver) {
             $metadata = $driver->getMetadata($name);
-            if ($metadata) {
-                $fields = $metadata->getFields();
-                if (!empty($fields)) {
-                    return $metadata;
-                }
+            if ($metadata && $metadata->getType()) {
+                return $metadata;
             }
         }
 

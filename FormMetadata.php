@@ -10,7 +10,12 @@
 
 namespace FlintLabs\Bundle\FormMetadataBundle;
 
+use FlintLabs\Bundle\FormMetadataBundle\Configuration\EventListener;
+use FlintLabs\Bundle\FormMetadataBundle\Configuration\EventSubscribers;
 use FlintLabs\Bundle\FormMetadataBundle\Configuration\Field;
+use FlintLabs\Bundle\FormMetadataBundle\Configuration\ModelTransformers;
+use FlintLabs\Bundle\FormMetadataBundle\Configuration\Type;
+use FlintLabs\Bundle\FormMetadataBundle\Configuration\ViewTransformers;
 
 /**
  * The meta data containing the configuration of the form
@@ -18,8 +23,14 @@ use FlintLabs\Bundle\FormMetadataBundle\Configuration\Field;
  */
 class FormMetadata
 {
+    /** @var EventListener[] */
+    protected $eventListeners = array();
+
+    /** @var EventSubscribers */
+    protected $eventSubscribers;
+
     /**
-     * @var array
+     * @var Field[]
      */
     protected $fields = array();
 
@@ -28,6 +39,21 @@ class FormMetadata
      * @var array
      */
     protected $groups = array();
+
+    /**
+     * @var ModelTransformers
+     */
+    protected $modelTransformers;
+
+    /**
+     * @var Type
+     */
+    protected $type;
+
+    /**
+     * @var ViewTransformers
+     */
+    protected $viewTransformers;
 
     /**
      * Add a field configuration
@@ -40,10 +66,90 @@ class FormMetadata
     }
 
     /**
-     * @return array
+     * @return array|Configuration\Field[]
      */
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @param EventListener $eventListener
+     */
+    public function addEventListener(EventListener $eventListener)
+    {
+        $this->eventListeners[] = $eventListener;
+    }
+
+    /**
+     * @return array|Configuration\EventListener[]
+     */
+    public function getEventListeners()
+    {
+        return $this->eventListeners;
+    }
+
+    /**
+     * @param Type $type
+     */
+    public function setType(Type $type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return ModelTransformers
+     */
+    public function getModelTransformers()
+    {
+        return $this->modelTransformers;
+    }
+
+    /**
+     * @param ModelTransformers $modelTransformers
+     */
+    public function setModelTransformers($modelTransformers)
+    {
+        $this->modelTransformers = $modelTransformers;
+    }
+
+    /**
+     * @return EventSubscribers
+     */
+    public function getEventSubscribers()
+    {
+        return $this->eventSubscribers;
+    }
+
+    /**
+     * @param EventSubscribers $eventSubscribers
+     */
+    public function setEventSubscribers($eventSubscribers)
+    {
+        $this->eventSubscribers = $eventSubscribers;
+    }
+
+    /**
+     * @return ViewTransformers
+     */
+    public function getViewTransformers()
+    {
+        return $this->viewTransformers;
+    }
+
+    /**
+     * @param ViewTransformers $viewTransformers
+     */
+    public function setViewTransformers($viewTransformers)
+    {
+        $this->viewTransformers = $viewTransformers;
     }
 }

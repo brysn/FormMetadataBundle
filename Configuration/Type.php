@@ -1,38 +1,19 @@
 <?php
-/*
- * This file is part of the Form Metadata library
- *
- * (c) Cameron Manderson <camm@flintinteractive.com.au>
- *
- * For full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace FlintLabs\Bundle\FormMetadataBundle\Configuration;
 
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * Contains the configuration elements for the field
- *
- * e.g. @Form\Field("text", foo="bar")
- *
- * @author camm (camm@flintinteractive.com.au)
  * @Annotation
  */
-class Field extends Annotation
+class Type extends Annotation
 {
     /**
      * Default for when a type is not specified
      * @var string
      */
     public $value;
-
-    /**
-     * The parameter name
-     * @var string
-     */
-    public $name;
 
     /**
      * The options to pass through
