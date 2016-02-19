@@ -24,13 +24,21 @@ as a best practice.
      * @Form\Field("Symfony\Component\Form\Extension\Core\Type\DateType", widget="single_text")
      */
 
+**Embedded Entity Example**
+
+    /**
+     * Refer to http://symfony.com/doc/current/book/forms.html#embedded-forms
+     *
+     * @Form\Field("MyBundle\Entity\Category")
+     */
+
 ### Entity with some basic form annotations
 
-    use FlintLabs\Bundle\FormMetadataBundle\Configuration as Form;
+    use Brysn\FormMetadataBundle\Configuration as Form;
     use Symfony\Bundle\Validator\Constraints as Assert;
 
     /**
-     * @Form\Type()
+     * @Form\Type(allow_extra_fields=true)
      */
     class Contact
     {
@@ -67,8 +75,8 @@ as a best practice.
 ### Update your deps file
 
     [Form-Metadata]
-        git=git@github.com:FlintLabs/Form-Metadata.git
-        target=/bundles/FlintLabs/Bundle/FormMetadataBundle
+        git=git@github.com:Brysn/FormMetadataBundle.git
+        target=/Brysn/FormMetadataBundle
 
 ### Update your vendors
 
@@ -76,21 +84,22 @@ as a best practice.
 
 ### Update your autoloader
 
-    // app/autoload.php
-    $loader->registerNamespaces(array(
+    // vendor/composer/autoload_namespaces.php
+    return array(
         // ...
-        'FlintLabs\\Bundle\\FormMetadataBundle' => __DIR__.'/../vendor/bundles/',
+        'Brysn\\FormMetadataBundle' => __DIR__.'/../vendor/bundles/',
         // ...
-    ));
+    );
 
 ### Register the bundle references
 
     // app/AppKernel.php
     public function registerBundles()
     {
-        return array(
+        $bundles = [
             // ...
-            new FlintLabs\Bundle\FormMetadataBundle\FlintLabsFormMetadataBundle(),
+            new Brysn\FormMetadataBundle\BrysnFormMetadataBundle(),
             // ...
-        );
+        ];
+        // ...
     }

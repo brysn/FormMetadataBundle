@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FlintLabs\Bundle\FormMetadataBundle\Driver;
+namespace Brysn\FormMetadataBundle\Driver;
 
-use FlintLabs\Bundle\FormMetadataBundle\FormMetadata;
+use Brysn\FormMetadataBundle\FormMetadata;
 
 /**
  *

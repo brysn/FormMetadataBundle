@@ -1,6 +1,6 @@
 <?php
 
-namespace FlintLabs\Bundle\FormMetadataBundle;
+namespace Brysn\FormMetadataBundle;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace FlintLabs\Bundle\FormMetadataBundle;
+namespace Brysn\FormMetadataBundle;
 
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\EventListener;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\EventSubscribers;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\Field;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\ModelTransformers;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\Type;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\ViewTransformers;
+use Brysn\FormMetadataBundle\Configuration\EventListener;
+use Brysn\FormMetadataBundle\Configuration\EventSubscribers;
+use Brysn\FormMetadataBundle\Configuration\Field;
+use Brysn\FormMetadataBundle\Configuration\ModelTransformers;
+use Brysn\FormMetadataBundle\Configuration\Type;
+use Brysn\FormMetadataBundle\Configuration\ViewTransformers;
 
 /**
  * The meta data containing the configuration of the form

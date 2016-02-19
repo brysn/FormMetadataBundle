@@ -8,19 +8,18 @@
  * file that was distributed with this source code.
  */
 
-namespace FlintLabs\Bundle\FormMetadataBundle\Driver;
+namespace Brysn\FormMetadataBundle\Driver;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\EventListener;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\EventSubscribers;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\Field;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\ModelTransformers;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\Type;
-use FlintLabs\Bundle\FormMetadataBundle\Configuration\ViewTransformers;
-use \FlintLabs\Bundle\FormMetadataBundle\FormMetadata;
+use Brysn\FormMetadataBundle\Configuration\EventListener;
+use Brysn\FormMetadataBundle\Configuration\EventSubscribers;
+use Brysn\FormMetadataBundle\Configuration\Field;
+use Brysn\FormMetadataBundle\Configuration\ModelTransformers;
+use Brysn\FormMetadataBundle\Configuration\Type;
+use Brysn\FormMetadataBundle\Configuration\ViewTransformers;
+use \Brysn\FormMetadataBundle\FormMetadata;
 
 /**
- *
  * @author camm (camm@flintinteractive.com.au)
  */
 class AnnotationsDriver implements MetadataDriverInterface
@@ -40,22 +39,22 @@ class AnnotationsDriver implements MetadataDriverInterface
         $reflectionClass = new \ReflectionClass($type);
 
         /** @var Type $type */
-        $type = $this->getFirstClassAnnotation($reflectionClass, 'FlintLabs\Bundle\FormMetadataBundle\Configuration\Type');
+        $type = $this->getFirstClassAnnotation($reflectionClass, 'Brysn\FormMetadataBundle\Configuration\Type');
         if (!$type) {
             return null;
         }
         $metadata->setType($type);
 
         /** @var ModelTransformers $modelTransformers */
-        $modelTransformers = $this->getFirstClassAnnotation($reflectionClass, 'FlintLabs\Bundle\FormMetadataBundle\Configuration\ModelTransformers');
+        $modelTransformers = $this->getFirstClassAnnotation($reflectionClass, 'Brysn\FormMetadataBundle\Configuration\ModelTransformers');
         $metadata->setModelTransformers($modelTransformers);
 
         /** @var ViewTransformers $viewTransformers */
-        $viewTransformers = $this->getFirstClassAnnotation($reflectionClass, 'FlintLabs\Bundle\FormMetadataBundle\Configuration\ViewTransformers');
+        $viewTransformers = $this->getFirstClassAnnotation($reflectionClass, 'Brysn\FormMetadataBundle\Configuration\ViewTransformers');
         $metadata->setViewTransformers($viewTransformers);
 
         /** @var EventSubscribers $eventSubscribers */
-        $eventSubscribers = $this->getFirstClassAnnotation($reflectionClass, 'FlintLabs\Bundle\FormMetadataBundle\Configuration\EventSubscribers');
+        $eventSubscribers = $this->getFirstClassAnnotation($reflectionClass, 'Brysn\FormMetadataBundle\Configuration\EventSubscribers');
         $metadata->setEventSubscribers($eventSubscribers);
 
         while (is_object($reflectionClass)) {
@@ -63,7 +62,7 @@ class AnnotationsDriver implements MetadataDriverInterface
             $properties = $reflectionClass->getProperties();
             foreach ($properties as $property) {
                 /** @var Field $field */
-                $field = $this->reader->getPropertyAnnotation($property, 'FlintLabs\Bundle\FormMetadataBundle\Configuration\Field');
+                $field = $this->reader->getPropertyAnnotation($property, 'Brysn\FormMetadataBundle\Configuration\Field');
                 if (!empty($field)) {
                     if (empty($field->name)) {
                         $field->name = $property->getName();
@@ -76,7 +75,7 @@ class AnnotationsDriver implements MetadataDriverInterface
             $methods = $reflectionClass->getMethods();
             foreach ($methods as $method) {
                 /** @var EventListener $eventListener */
-                $eventListener = $this->reader->getMethodAnnotation($method, 'FlintLabs\Bundle\FormMetadataBundle\Configuration\EventListener');
+                $eventListener = $this->reader->getMethodAnnotation($method, 'Brysn\FormMetadataBundle\Configuration\EventListener');
                 if (!empty($eventListener)) {
                     if (empty($eventListener->method)) {
                         $eventListener->method = $method->getName();

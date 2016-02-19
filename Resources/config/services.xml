@@ -3,8 +3,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
 	<parameters>
-		<parameter key="form_metadata.reader.annotation.class">FlintLabs\Bundle\FormMetadataBundle\Driver\AnnotationsDriver</parameter>
-        <parameter key="form_metadata.extension.class">FlintLabs\Bundle\FormMetadataBundle\FormExtension</parameter>
+		<parameter key="form_metadata.reader.annotation.class">Brysn\FormMetadataBundle\Driver\AnnotationsDriver</parameter>
+        <parameter key="form_metadata.extension.class">Brysn\FormMetadataBundle\FormExtension</parameter>
 	</parameters>
 
     <services>

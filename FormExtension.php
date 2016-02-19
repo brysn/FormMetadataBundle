@@ -1,8 +1,8 @@
 <?php
 
-namespace FlintLabs\Bundle\FormMetadataBundle;
+namespace Brysn\FormMetadataBundle;
 
-use FlintLabs\Bundle\FormMetadataBundle\Driver\MetadataDriverInterface;
+use Brysn\FormMetadataBundle\Driver\MetadataDriverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Form\Exception\InvalidArgumentException;

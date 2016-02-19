@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FlintLabs\Bundle\FormMetadataBundle\Configuration;
+namespace Brysn\FormMetadataBundle\Configuration;
 
 use Doctrine\Common\Annotations\Annotation;
 

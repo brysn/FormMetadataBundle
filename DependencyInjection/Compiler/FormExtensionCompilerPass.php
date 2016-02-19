@@ -1,6 +1,6 @@
 <?php
 
-namespace FlintLabs\Bundle\FormMetadataBundle\DependencyInjection\Compiler;
+namespace Brysn\FormMetadataBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

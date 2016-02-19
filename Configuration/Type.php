@@ -1,6 +1,6 @@
 <?php
 
-namespace FlintLabs\Bundle\FormMetadataBundle\Configuration;
+namespace Brysn\FormMetadataBundle\Configuration;
 
 use Doctrine\Common\Annotations\Annotation;
 
