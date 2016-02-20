@@ -27,11 +27,17 @@ class BrysnFormMetadataExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.xml');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.xml');
+        $cacheDirectory = $container->getDefinition('brysn_formmetadata.metadata.cache')->getArgument(0);
+        $cacheDirectory = $container->getParameterBag()->resolveValue($cacheDirectory);
+        if (!is_dir($cacheDirectory)) {
+            mkdir($cacheDirectory, 0777, true);
+        }
     }
 
     public function getAlias()

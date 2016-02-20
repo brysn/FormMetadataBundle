@@ -2,18 +2,21 @@
 
 namespace Brysn\FormMetadataBundle;
 
-use Brysn\FormMetadataBundle\Driver\MetadataDriverInterface;
+use Brysn\FormMetadataBundle\Metadata\ClassMetadata;
+use Metadata\MetadataFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 
 class FormExtension extends AbstractExtension
 {
-    /**
-     * Drivers that will be used to obtaining metadata
-     * @var MetadataDriverInterface[]
-     */
-    private $drivers = array();
+    /** @var MetadataFactoryInterface */
+    private $metadataFactory;
+
+    public function __construct(MetadataFactoryInterface $metadataFactory)
+    {
+        $this->metadataFactory = $metadataFactory;
+    }
 
     public function getType($name)
     {
@@ -32,26 +35,18 @@ class FormExtension extends AbstractExtension
         return $metadata ? true : false;
     }
 
-    /**
-     * Add an entity metadata reader to the readers
-     * @param MetadataDriverInterface $driver
-     * @return void
-     */
-    public function addDriver(MetadataDriverInterface $driver)
+    protected function getMetadata($class)
     {
-        $this->drivers[] = $driver;
-    }
-
-    protected function getMetadata($name)
-    {
-        // Look to the readers to find metadata
-        foreach ($this->drivers as $driver) {
-            $metadata = $driver->getMetadata($name);
-            if ($metadata && $metadata->getType()) {
-                return $metadata;
-            }
+        if (!class_exists($class)) {
+            return null;
         }
 
-        return null;
+        /** @var ClassMetadata $classMetadata */
+        $classMetadata = $this->metadataFactory->getMetadataForClass($class);
+        if (!$classMetadata->isForm()) {
+            return null;
+        }
+
+        return $classMetadata;
     }
 }

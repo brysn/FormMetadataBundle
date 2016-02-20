@@ -3,16 +3,27 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
 	<parameters>
-		<parameter key="form_metadata.reader.annotation.class">Brysn\FormMetadataBundle\Driver\AnnotationsDriver</parameter>
-        <parameter key="form_metadata.extension.class">Brysn\FormMetadataBundle\FormExtension</parameter>
+        <parameter key="brysn_formmetadata.form.extension.class">Brysn\FormMetadataBundle\FormExtension</parameter>
+        <parameter key="brysn_formmetadata.metadata.annotation_driver.class">Brysn\FormMetadataBundle\Metadata\Driver\AnnotationDriver</parameter>
+        <parameter key="brysn_formmetadata.metadata.cache.class">Metadata\Cache\FileCache</parameter>
+        <parameter key="brysn_formmetadata.metadata.factory.class">Metadata\MetadataFactory</parameter>
 	</parameters>
 
     <services>
-		<service id="form_metadata.driver.annotation" class="%form_metadata.reader.annotation.class%"/>
-        <service id="form_metadata.extension" class="%form_metadata.extension.class%">
-            <call method="addDriver">
-                <argument type="service" id="form_metadata.driver.annotation" />
+        <service id="brysn_formmetadata.form.extension" class="%brysn_formmetadata.form.extension.class%">
+            <argument type="service" id="brysn_formmetadata.metadata.factory" />
+        </service>
+        <service id="brysn_formmetadata.metadata.annotation_driver" class="%brysn_formmetadata.metadata.annotation_driver.class%" public="false">
+            <argument type="service" id="annotation_reader" />
+        </service>
+        <service id="brysn_formmetadata.metadata.factory" class="%brysn_formmetadata.metadata.factory.class%" public="false">
+            <argument type="service" id="brysn_formmetadata.metadata.annotation_driver" />
+            <call method="setCache">
+                <argument type="service" id="brysn_formmetadata.metadata.cache" />
             </call>
+        </service>
+        <service id="brysn_formmetadata.metadata.cache" class="%brysn_formmetadata.metadata.cache.class%" public="false">
+            <argument>%kernel.cache_dir%/brysn/form_metedata</argument>
         </service>
     </services>
 </container>

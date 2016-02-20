@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brysn\FormMetadataBundle\Configuration;
+namespace Brysn\FormMetadataBundle\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 
@@ -20,34 +20,24 @@ use Doctrine\Common\Annotations\Annotation;
  * @author camm (camm@flintinteractive.com.au)
  * @Annotation
  */
-class Field extends Annotation
+class Field
 {
     /**
-     * Default for when a type is not specified
-     * @var string
+      * @var string
      */
-    public $value;
+    public $type;
 
     /**
-     * The parameter name
-     * @var string
-     */
-    public $name;
-
-    /**
-     * The options to pass through
-     * @var array
+      * @var array
      */
     public $options = array();
 
-    /**
-     * Magic method for passing options through the annotation that are undefined
-     * @param $name
-     * @param $value
-     * @return void
-     */
-    public function __set($name, $value)
+    public function __construct(array $data)
     {
-        $this->options[$name] = $value;
+        if (isset($data['value'])) {
+            $this->type = $data['value'];
+            unset($data['value']);
+        }
+        $this->options = $data;
     }
 }

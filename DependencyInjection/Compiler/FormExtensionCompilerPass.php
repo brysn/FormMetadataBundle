@@ -16,7 +16,7 @@ class FormExtensionCompilerPass implements CompilerPassInterface
 
         $definition = $container->findDefinition('form.registry');
         $extensions = $definition->getArgument(0);
-        $extensions[] = new Reference('form_metadata.extension');
+        $extensions[] = new Reference('brysn_formmetadata.form.extension');
         $definition->replaceArgument(0, $extensions);
     }
 }

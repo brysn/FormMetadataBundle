@@ -18,11 +18,10 @@
     }
   ],
   "require"     : {
-    "php": ">=5.5.9"
-  },
-  "require-dev": {
+    "php": ">=5.5.9",
     "symfony/symfony": "~3.0",
-    "doctrine/annotations": "1.*"
+    "doctrine/annotations": "1.*",
+    "jms/metadata": "~1.1"
   },
   "autoload"    : {
     "psr-4": {

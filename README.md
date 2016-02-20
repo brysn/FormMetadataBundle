@@ -34,7 +34,7 @@ as a best practice.
 
 ### Entity with some basic form annotations
 
-    use Brysn\FormMetadataBundle\Configuration as Form;
+    use Brysn\FormMetadataBundle\Annotation as Form;
     use Symfony\Bundle\Validator\Constraints as Assert;
 
     /**

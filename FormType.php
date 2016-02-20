@@ -2,6 +2,9 @@
 
 namespace Brysn\FormMetadataBundle;
 
+use Brysn\FormMetadataBundle\Metadata\ClassMetadata;
+use Brysn\FormMetadataBundle\Metadata\MethodMetadata;
+use Brysn\FormMetadataBundle\Metadata\PropertyMetadata;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -11,10 +14,10 @@ class FormType extends AbstractType
 {
     private $class;
 
-    /** @var FormMetadata */
+    /** @var ClassMetadata */
     private $metadata;
 
-    public function __construct($class, FormMetadata $metadata)
+    public function __construct($class, ClassMetadata $metadata)
     {
         $this->class = $class;
         $this->metadata = $metadata;
@@ -23,68 +26,63 @@ class FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $modelTransformers = $this->metadata->getModelTransformers();
-        if ($modelTransformers) {
-            foreach ($modelTransformers->getValues() as $modelTransformer) {
-                $builder->addModelTransformer(new $modelTransformer);
-            }
+        foreach ($modelTransformers as $modelTransformer) {
+            $builder->addModelTransformer(new $modelTransformer);
         }
 
         $viewTransformers = $this->metadata->getViewTransformers();
-        if ($viewTransformers) {
-            foreach ($viewTransformers->getValues() as $viewTransformer) {
-                $builder->addViewTransformer(new $viewTransformer);
-            }
+        foreach ($viewTransformers as $viewTransformer) {
+            $builder->addViewTransformer(new $viewTransformer);
         }
 
         $eventSubscribers = $this->metadata->getEventSubscribers();
-        if ($eventSubscribers) {
-            foreach ($eventSubscribers->getValues() as $eventSubscriber) {
-                $builder->addEventSubscriber(new $eventSubscriber);
-            }
+        foreach ($eventSubscribers as $eventSubscriber) {
+            $builder->addEventSubscriber(new $eventSubscriber);
         }
 
-        $fields = $this->metadata->getFields();
+        /** @var PropertyMetadata[] $fields */
+        $fields = $this->metadata->propertyMetadata;
         foreach ($fields as $field) {
-            $builder->add($field->name, $field->value, $field->options);
+            $builder->add($field->name, $field->type, $field->options);
         }
 
-        $eventListeners = $this->metadata->getEventListeners();
+        /** @var MethodMetadata[] $methods */
+        $methods = $this->metadata->methodMetadata;
         $class = $this->class;
-        foreach ($eventListeners as $eventListener) {
-            $method = $eventListener->method;
-            $builder->addEventListener($eventListener->value, function(FormEvent $event) use ($builder, $class, $method) {
-                $data = $builder->getData();
-                if (!$data instanceof $class) {
-                    $data = $event->getData();
+        foreach ($methods as $methodName => $methodMetadata) {
+            foreach ($methodMetadata->getEventListeners() as $event => $priority) {
+                $builder->addEventListener($event, function(FormEvent $event) use ($builder, $class, $methodName) {
+                    $data = $builder->getData();
                     if (!$data instanceof $class) {
+                        $data = $event->getData();
+                        if (!$data instanceof $class) {
+                            return;
+                        }
+                    }
+
+                    if (!method_exists($data, $methodName)) {
                         return;
                     }
-                }
 
-                if (!method_exists($data, $method)) {
-                    return;
-                }
-
-                $data->$method($event);
-            }, $eventListener->priority);
+                    $data->$methodName($event);
+                }, $priority);
+            }
         }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $type = $this->metadata->getType();
         $options = array_merge(array(
             'data_class' => $this->class,
-        ), $type->options);
-
+        ), $this->metadata->getOptions());
         $resolver->setDefaults($options);
     }
 
     public function getBlockPrefix()
     {
         $type = $this->metadata->getType();
-        if ($type->value) {
-            return $type->value;
+        if ($type) {
+            return $type;
         }
 
         return parent::getBlockPrefix();

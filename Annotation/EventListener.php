@@ -1,6 +1,6 @@
 <?php
 
-namespace Brysn\FormMetadataBundle\Configuration;
+namespace Brysn\FormMetadataBundle\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 
@@ -10,15 +10,9 @@ use Doctrine\Common\Annotations\Annotation;
 class EventListener
 {
     /**
-     * Default for when a type is not specified
      * @var string
      */
-    public $value;
-
-    /**
-     * @var string
-     */
-    public $method;
+    public $event;
 
     /**
      * @var int
@@ -35,7 +29,7 @@ class EventListener
             throw new \InvalidArgumentException(sprintf('@EventListener invalid event "%s".', $values['value']));
         }
 
-        $this->value = constant('Symfony\Component\Form\FormEvents::' . $values['value']);
+        $this->event = constant('Symfony\Component\Form\FormEvents::' . $values['value']);
         unset($values['value']);
 
         if (isset($values['priority'])) {
