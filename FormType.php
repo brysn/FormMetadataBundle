@@ -2,71 +2,88 @@
 
 namespace Brysn\FormMetadataBundle;
 
-use Brysn\FormMetadataBundle\Metadata\ClassMetadata;
-use Brysn\FormMetadataBundle\Metadata\MethodMetadata;
-use Brysn\FormMetadataBundle\Metadata\PropertyMetadata;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormType extends AbstractType
 {
+    /** @var string */
     private $class;
 
-    /** @var ClassMetadata */
-    private $metadata;
+    /** @var string */
+    private $type;
 
-    public function __construct($class, ClassMetadata $metadata)
+    /** @var array */
+    private $options;
+
+    /** @var array */
+    private $fields;
+
+    /** @var array */
+    private $eventListeners;
+
+    /** @var EventSubscriberInterface[] */
+    private $eventSubscribers;
+
+    /** @var DataTransformerInterface[] */
+    private $modelTransformers;
+
+    /** @var DataTransformerInterface[] */
+    private $viewTransformers;
+
+    public function __construct($class, $type, array $options, array $fields, array $eventListeners, array $eventSubscribers, array $modelTransformers, array $viewTransformers)
     {
         $this->class = $class;
-        $this->metadata = $metadata;
+        $this->type = $type;
+        $this->options = $options;
+        $this->fields = $fields;
+        $this->eventListeners = $eventListeners;
+        $this->eventSubscribers = $eventSubscribers;
+        $this->modelTransformers = $modelTransformers;
+        $this->viewTransformers = $viewTransformers;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $modelTransformers = $this->metadata->getModelTransformers();
-        foreach ($modelTransformers as $modelTransformer) {
-            $builder->addModelTransformer(new $modelTransformer);
+        foreach ($this->fields as $field) {
+            list($name, $type, $options) = $field;
+            $builder->add($name, $type, $options);
         }
 
-        $viewTransformers = $this->metadata->getViewTransformers();
-        foreach ($viewTransformers as $viewTransformer) {
-            $builder->addViewTransformer(new $viewTransformer);
-        }
-
-        $eventSubscribers = $this->metadata->getEventSubscribers();
-        foreach ($eventSubscribers as $eventSubscriber) {
-            $builder->addEventSubscriber(new $eventSubscriber);
-        }
-
-        /** @var PropertyMetadata[] $fields */
-        $fields = $this->metadata->propertyMetadata;
-        foreach ($fields as $field) {
-            $builder->add($field->name, $field->type, $field->options);
-        }
-
-        /** @var MethodMetadata[] $methods */
-        $methods = $this->metadata->methodMetadata;
         $class = $this->class;
-        foreach ($methods as $methodName => $methodMetadata) {
-            foreach ($methodMetadata->getEventListeners() as $event => $priority) {
-                $builder->addEventListener($event, function(FormEvent $event) use ($builder, $class, $methodName) {
-                    $data = $builder->getData();
+        foreach ($this->eventListeners as $eventListener) {
+            list($method, $event, $priority) = $eventListener;
+            $builder->addEventListener($event, function(FormEvent $event) use ($builder, $class, $method) {
+                $data = $builder->getData();
+                if (!$data instanceof $class) {
+                    $data = $event->getData();
                     if (!$data instanceof $class) {
-                        $data = $event->getData();
-                        if (!$data instanceof $class) {
-                            return;
-                        }
-                    }
-
-                    if (!method_exists($data, $methodName)) {
                         return;
                     }
+                }
 
-                    $data->$methodName($event);
-                }, $priority);
-            }
+                if (!method_exists($data, $method)) {
+                    return;
+                }
+
+                $data->$method($event);
+            }, $priority);
+        }
+
+        foreach ($this->eventSubscribers as $eventSubscriber) {
+            $builder->addEventSubscriber($eventSubscriber);
+        }
+
+        foreach ($this->modelTransformers as $modelTransformer) {
+            $builder->addModelTransformer($modelTransformer);
+        }
+
+        foreach ($this->viewTransformers as $viewTransformer) {
+            $builder->addViewTransformer($viewTransformer);
         }
     }
 
@@ -74,15 +91,14 @@ class FormType extends AbstractType
     {
         $options = array_merge(array(
             'data_class' => $this->class,
-        ), $this->metadata->getOptions());
+        ), $this->options);
         $resolver->setDefaults($options);
     }
 
     public function getBlockPrefix()
     {
-        $type = $this->metadata->getType();
-        if ($type) {
-            return $type;
+        if ($this->type) {
+            return $this->type;
         }
 
         return parent::getBlockPrefix();

@@ -11,7 +11,14 @@
 
     <services>
         <service id="brysn_formmetadata.form.extension" class="%brysn_formmetadata.form.extension.class%">
+            <argument type="service" id="service_container" />
             <argument type="service" id="brysn_formmetadata.metadata.factory" />
+            <!-- All services with tag "brysn.form_metadata.event_subscriber" are inserted here by FormExtensionCompilerPass -->
+            <argument type="collection" />
+            <!-- All services with tag "brysn.form_metadata.model_transformer" are inserted here by FormExtensionCompilerPass -->
+            <argument type="collection" />
+            <!-- All services with tag "brysn.form_metadata.view_transformer" are inserted here by FormExtensionCompilerPass -->
+            <argument type="collection" />
         </service>
         <service id="brysn_formmetadata.metadata.annotation_driver" class="%brysn_formmetadata.metadata.annotation_driver.class%" public="false">
             <argument type="service" id="annotation_reader" />
