@@ -70,6 +70,52 @@ as a best practice.
         }
     }
 
+### @Form\EventSubscribers, @Form\ViewTransformers and @Form\ModelTransformers
+
+    /**
+     * @Form\Type()
+     * @Form\EventSubscribers({"MyBundle\Form\EventSubscriber\MyEventSubscriber"})
+     * @Form\ModelTransformers({"MyBundle\Form\DataTransformer\MyModelTransformer"})
+     * @Form\ViewTransformers({"MyBundle\Form\DataTransformer\MyViewTransformer"})
+     */
+    class Contact
+    {
+        // ...
+
+If dependency injection is needed for event subscribers or data transformers then define the class as a service and tag it using one of the following tags.
+
+_brysn.form\_metadata.event\_subscriber_
+_brysn.form\_metadata.model\_transformer_
+_brysn.form\_metadata.view\_transformer_
+
+    mybundle.form.event_subscriber.my_event_subscriber:
+        class: MyBundle\Form\EventSubscriber\MyEventSubscriber
+        arguments: ["argument"]
+        tags:
+            - { name: brysn.form_metadata.event_subscriber }
+
+### @Form\EventListener
+
+    /**
+     * @Form\EventListener("PRE_SET_DATA", priority=0)
+     */
+    public function preSetData($event)
+    {
+        // perform some action
+    }
+
+Most event listener methods will need the entity to be passed as the default data when creating the form.  If the entity is not passed as the default data then the entity will not be created until the SUBMIT event and any event prior to the SUBMIT event will not be called on the entity. The SUBMIT and POST_SUBMIT events will still work as expected.
+
+    // The preSetData method WILL NOT be called because the Contact entity will not have been created when the event fires.
+    $form = $this->createForm(\MyBundle\Entity\Contact::class);
+
+    // The preSetData method WILL be called because the Contact entity was set as the default form data.
+    $form = $this->createForm(\MyBundle\Entity\Contact::class, new \MyBundle\Entity\Contact);
+
+
+If it is necessary to create the form without setting the entity as the default form data and one of the early form
+events is needed then use **@Form\EventSubscribers**.
+
 ## Installation
 
 ### Update your deps file

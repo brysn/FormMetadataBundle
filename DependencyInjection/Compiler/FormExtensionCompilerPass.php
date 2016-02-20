@@ -25,7 +25,7 @@ class FormExtensionCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('brysn.form_metadata.event_subscriber') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             if (!$serviceDefinition->isPublic()) {
-                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form type extensions are lazy-loaded.', $serviceId));
+                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form metadata event subscribers are lazy-loaded.', $serviceId));
             }
             $eventSubscribers[$serviceDefinition->getClass()] = $serviceId;
         }
@@ -35,7 +35,7 @@ class FormExtensionCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('brysn.form_metadata.model_transformer') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             if (!$serviceDefinition->isPublic()) {
-                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form type extensions are lazy-loaded.', $serviceId));
+                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form metadata model transformers are lazy-loaded.', $serviceId));
             }
             $modelTransformers[$serviceDefinition->getClass()] = $serviceId;
         }
@@ -45,7 +45,7 @@ class FormExtensionCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('brysn.form_metadata.view_transformer') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             if (!$serviceDefinition->isPublic()) {
-                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form type extensions are lazy-loaded.', $serviceId));
+                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form metadata view transformers are lazy-loaded.', $serviceId));
             }
             $viewTransformers[$serviceDefinition->getClass()] = $serviceId;
         }
