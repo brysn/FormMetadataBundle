@@ -1,12 +1,4 @@
 <?php
-/*
- * This file is part of the Form Metadata library
- *
- * (c) Cameron Manderson <camm@flintinteractive.com.au>
- *
- * For full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Brysn\FormMetadataBundle\DependencyInjection;
 
@@ -26,21 +18,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('form_metadata');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
-//        $rootNode
-//            ->append($this->getTemplateNode())
-//            ->end();
+        $rootNode = $treeBuilder->root('brysn_formmetadata');
 
         return $treeBuilder;
-    }
-
-    public function getTemplateNode()
-    {
-
     }
 }
