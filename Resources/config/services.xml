@@ -3,16 +3,20 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
 	<parameters>
-        <parameter key="brysn_formmetadata.form.extension.class">Brysn\FormMetadataBundle\FormExtension</parameter>
-        <parameter key="brysn_formmetadata.metadata.annotation_driver.class">Brysn\FormMetadataBundle\Metadata\Driver\AnnotationDriver</parameter>
-        <parameter key="brysn_formmetadata.metadata.cache.class">Metadata\Cache\FileCache</parameter>
-        <parameter key="brysn_formmetadata.metadata.factory.class">Metadata\MetadataFactory</parameter>
+        <parameter key="brysn_form_metadata.form.extension.class">Brysn\FormMetadataBundle\Form\Extension</parameter>
+        <parameter key="brysn_form_metadata.metadata.annotation_driver.class">Brysn\FormMetadataBundle\Metadata\Driver\AnnotationDriver</parameter>
+        <parameter key="brysn_form_metadata.metadata.cache.class">Metadata\Cache\FileCache</parameter>
+        <parameter key="brysn_form_metadata.metadata.driver_chain.class">Metadata\Driver\DriverChain</parameter>
+        <parameter key="brysn_form_metadata.metadata.factory.class">Metadata\MetadataFactory</parameter>
+        <parameter key="brysn_form_metadata.metadata.file_locator_class">Metadata\Driver\FileLocator</parameter>
+        <parameter key="brysn_form_metadata.metadata.yaml_driver.class">Brysn\FormMetadataBundle\Metadata\Driver\YamlDriver</parameter>
 	</parameters>
 
     <services>
-        <service id="brysn_formmetadata.form.extension" class="%brysn_formmetadata.form.extension.class%">
+
+        <service id="brysn_form_metadata.form.extension" class="%brysn_form_metadata.form.extension.class%">
             <argument type="service" id="service_container" />
-            <argument type="service" id="brysn_formmetadata.metadata.factory" />
+            <argument type="service" id="brysn_form_metadata.metadata.factory" />
             <!-- All services with tag "brysn.form_metadata.event_subscriber" are inserted here by FormExtensionCompilerPass -->
             <argument type="collection" />
             <!-- All services with tag "brysn.form_metadata.model_transformer" are inserted here by FormExtensionCompilerPass -->
@@ -20,17 +24,37 @@
             <!-- All services with tag "brysn.form_metadata.view_transformer" are inserted here by FormExtensionCompilerPass -->
             <argument type="collection" />
         </service>
-        <service id="brysn_formmetadata.metadata.annotation_driver" class="%brysn_formmetadata.metadata.annotation_driver.class%" public="false">
+
+        <service id="brysn_form_metadata.metadata.annotation_driver" class="%brysn_form_metadata.metadata.annotation_driver.class%" public="false">
             <argument type="service" id="annotation_reader" />
         </service>
-        <service id="brysn_formmetadata.metadata.factory" class="%brysn_formmetadata.metadata.factory.class%" public="false">
-            <argument type="service" id="brysn_formmetadata.metadata.annotation_driver" />
+
+        <service id="brysn_form_metadata.metadata.cache" class="%brysn_form_metadata.metadata.cache.class%" public="false">
+            <argument>%kernel.cache_dir%/brysn/form_metedata</argument>
+        </service>
+
+        <service id="brysn_form_metadata.metadata.driver_chain" class="%brysn_form_metadata.metadata.driver_chain.class%">
+            <argument type="collection">
+                <argument type="service" id="brysn_form_metadata.metadata.yaml_driver" />
+                <argument type="service" id="brysn_form_metadata.metadata.annotation_driver" />
+            </argument>
+        </service>
+
+        <service id="brysn_form_metadata.metadata.factory" class="%brysn_form_metadata.metadata.factory.class%" public="false">
+            <argument type="service" id="brysn_form_metadata.metadata.driver_chain" />
+            <argument>Metadata\ClassHierarchyMetadata</argument>
+            <argument>false</argument>
             <call method="setCache">
-                <argument type="service" id="brysn_formmetadata.metadata.cache" />
+                <argument type="service" id="brysn_form_metadata.metadata.cache" />
             </call>
         </service>
-        <service id="brysn_formmetadata.metadata.cache" class="%brysn_formmetadata.metadata.cache.class%" public="false">
-            <argument>%kernel.cache_dir%/brysn/form_metedata</argument>
+
+        <service id="brysn_form_metadata.metadata.file_locator" class="%brysn_form_metadata.metadata.file_locator_class%">
+            <argument /><!-- collection of directories -->
+        </service>
+
+        <service id="brysn_form_metadata.metadata.yaml_driver" class="%brysn_form_metadata.metadata.yaml_driver.class%" public="false">
+            <argument type="service" id="brysn_form_metadata.metadata.file_locator" />
         </service>
     </services>
 </container>

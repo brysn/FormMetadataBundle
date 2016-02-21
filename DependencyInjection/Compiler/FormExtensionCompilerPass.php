@@ -16,13 +16,13 @@ class FormExtensionCompilerPass implements CompilerPassInterface
 
         $definition = $container->findDefinition('form.registry');
         $extensions = $definition->getArgument(0);
-        $extensions[] = new Reference('brysn_formmetadata.form.extension');
+        $extensions[] = new Reference('brysn_form_metadata.form.extension');
         $definition->replaceArgument(0, $extensions);
 
-        $definition = $container->findDefinition('brysn_formmetadata.form.extension');
+        $definition = $container->findDefinition('brysn_form_metadata.form.extension');
 
         $eventSubscribers = array();
-        foreach ($container->findTaggedServiceIds('brysn.form_metadata.event_subscriber') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('brysn_form_metadata.event_subscriber') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             if (!$serviceDefinition->isPublic()) {
                 throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form metadata event subscribers are lazy-loaded.', $serviceId));
@@ -32,7 +32,7 @@ class FormExtensionCompilerPass implements CompilerPassInterface
         $definition->replaceArgument(2, $eventSubscribers);
 
         $modelTransformers = array();
-        foreach ($container->findTaggedServiceIds('brysn.form_metadata.model_transformer') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('brysn_form_metadata.model_transformer') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             if (!$serviceDefinition->isPublic()) {
                 throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form metadata model transformers are lazy-loaded.', $serviceId));
@@ -42,7 +42,7 @@ class FormExtensionCompilerPass implements CompilerPassInterface
         $definition->replaceArgument(3, $modelTransformers);
 
         $viewTransformers = array();
-        foreach ($container->findTaggedServiceIds('brysn.form_metadata.view_transformer') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('brysn_form_metadata.view_transformer') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             if (!$serviceDefinition->isPublic()) {
                 throw new \InvalidArgumentException(sprintf('The service "%s" must be public as form metadata view transformers are lazy-loaded.', $serviceId));

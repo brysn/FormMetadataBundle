@@ -1,6 +1,6 @@
 <?php
 
-namespace Brysn\FormMetadataBundle;
+namespace Brysn\FormMetadataBundle\Form;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormType extends AbstractType
+class Type extends AbstractType
 {
     /** @var string */
     private $class;
@@ -101,6 +101,6 @@ class FormType extends AbstractType
             return $this->type;
         }
 
-        return parent::getBlockPrefix();
+        return 'form';
     }
 }

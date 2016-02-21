@@ -84,15 +84,15 @@ as a best practice.
 
 If dependency injection is needed for event subscribers or data transformers then define the class as a service and tag it using one of the following tags.
 
-_brysn.form\_metadata.event\_subscriber_
-_brysn.form\_metadata.model\_transformer_
-_brysn.form\_metadata.view\_transformer_
+_brysn\_form\_metadata.event\_subscriber_
+_brysn\_form\_metadata.model\_transformer_
+_brysn\_form\_metadata.view\_transformer_
 
     mybundle.form.event_subscriber.my_event_subscriber:
         class: MyBundle\Form\EventSubscriber\MyEventSubscriber
         arguments: ["argument"]
         tags:
-            - { name: brysn.form_metadata.event_subscriber }
+            - { name: brysn_form_metadata.event_subscriber }
 
 ### @Form\EventListener
 

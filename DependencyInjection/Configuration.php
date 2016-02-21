@@ -17,9 +17,22 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('brysn_formmetadata');
+        $builder = new TreeBuilder();
+        $rootNode = $builder->root('brysn_form_metadata');
+        $rootNode
+            ->children()
+                ->booleanNode('debug')->defaultValue(false)->end()
+                ->arrayNode('directories')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('path')->isRequired()->end()
+                            ->scalarNode('namespace_prefix')->defaultValue('')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
-        return $treeBuilder;
+        return $builder;
     }
 }

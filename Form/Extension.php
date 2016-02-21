@@ -1,6 +1,6 @@
 <?php
 
-namespace Brysn\FormMetadataBundle;
+namespace Brysn\FormMetadataBundle\Form;
 
 use Brysn\FormMetadataBundle\Metadata\ClassMetadata;
 use Brysn\FormMetadataBundle\Metadata\MethodMetadata;
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 
-class FormExtension extends AbstractExtension
+class Extension extends AbstractExtension
 {
     /** @var ContainerInterface */
     private $container;
@@ -69,7 +69,7 @@ class FormExtension extends AbstractExtension
         $modelTransformers = $this->getObjects($metadata->getModelTransformers(), $this->modelTransformers);
         $viewTransformers = $this->getObjects($metadata->getViewTransformers(), $this->viewTransformers);
 
-        return new FormType($name, $type, $options, $fields, $eventListeners, $eventSubscribers, $modelTransformers, $viewTransformers);
+        return new Type($name, $type, $options, $fields, $eventListeners, $eventSubscribers, $modelTransformers, $viewTransformers);
     }
 
     public function hasType($name)
