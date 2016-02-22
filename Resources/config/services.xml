@@ -2,7 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-	<parameters>
+    <parameters>
         <parameter key="brysn_form_metadata.form.extension.class">Brysn\FormMetadataBundle\Form\Extension</parameter>
         <parameter key="brysn_form_metadata.metadata.annotation_driver.class">Brysn\FormMetadataBundle\Metadata\Driver\AnnotationDriver</parameter>
         <parameter key="brysn_form_metadata.metadata.cache.class">Metadata\Cache\FileCache</parameter>
@@ -10,10 +10,9 @@
         <parameter key="brysn_form_metadata.metadata.factory.class">Metadata\MetadataFactory</parameter>
         <parameter key="brysn_form_metadata.metadata.file_locator_class">Metadata\Driver\FileLocator</parameter>
         <parameter key="brysn_form_metadata.metadata.yaml_driver.class">Brysn\FormMetadataBundle\Metadata\Driver\YamlDriver</parameter>
-	</parameters>
+    </parameters>
 
     <services>
-
         <service id="brysn_form_metadata.form.extension" class="%brysn_form_metadata.form.extension.class%">
             <argument type="service" id="service_container" />
             <argument type="service" id="brysn_form_metadata.metadata.factory" />

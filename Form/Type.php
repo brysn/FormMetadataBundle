@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Type extends AbstractType
@@ -101,6 +102,6 @@ class Type extends AbstractType
             return $this->type;
         }
 
-        return 'form';
+        return StringUtil::fqcnToBlockPrefix($this->class);
     }
 }
